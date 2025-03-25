@@ -1,3 +1,6 @@
+from django.contrib.auth import authenticate
+
+
 from rest_framework import serializers
 
 
@@ -38,4 +41,20 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         if attrs["password"] != attrs["password2"]:
             raise serializers.ValidationError({"password": "Passwords must match!"})
 
+        return attrs
+
+
+class UserTokenSerializer(serializers.Serializer):
+
+    username = serializers.CharField(max_length=200)
+    password = serializers.CharField(max_length=200)
+
+    def validate(self, attrs):
+
+        user = authenticate(username=attrs["username"], password=attrs["password"])
+
+        if not user:
+            raise serializers.ValidationError("Username and Password does not match")
+
+        attrs["user"] = user
         return attrs
