@@ -41,8 +41,10 @@ INSTALLED_APPS = [
     # rest_framework
     "rest_framework",
     "rest_framework.authtoken",
+
     # My apps.
     "accounts.apps.AccountsConfig",
+    "urls.apps.UrlsConfig",
 ]
 
 MIDDLEWARE = [
