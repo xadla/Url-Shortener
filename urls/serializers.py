@@ -28,8 +28,11 @@ class CreateUrlSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
+        short_url = validated_data.get("short_url", "")
         url = Url.objects.create(
             author=validated_data['author'],
-            original_url=validated_data['original_url']
+            original_url=validated_data['original_url'],
+            short_url=short_url,
         )
         return url
+

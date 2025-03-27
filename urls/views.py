@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 
 
 from django.views import View
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404, Http404
 
 
 from .serializers import CreateUrlSerializer
@@ -37,5 +37,4 @@ class RenderShortedURL(View):
         url = get_object_or_404(Url, short_url=short_url)
         url.visits += 1
         url.save()
-
         return redirect(url.original_url)
