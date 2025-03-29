@@ -6,11 +6,11 @@ from rest_framework.permissions import IsAuthenticated
 
 
 from django.views import View
-from django.shortcuts import redirect, get_object_or_404, Http404
+from django.shortcuts import redirect, get_object_or_404
 
 
-from .serializers import CreateUrlSerializer
 from .models import Url
+from .tasks import create_short_url
 
 
 class CreateShortURL(APIView):
@@ -19,15 +19,15 @@ class CreateShortURL(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-
         data = request.data
-        ser_data = CreateUrlSerializer(data=data)
-
-        if ser_data.is_valid():
-            ser_data.save()
-            return Response(ser_data.data, status=status.HTTP_200_OK)
-
-        return Response(ser_data.errors, status=status.HTTP_400_BAD_REQUEST)
+        task = create_short_url.delay(data)
+        return Response(
+            {
+                "message": "Processing request asynchronously",
+                "task_id": task.id
+            },
+            status=status.HTTP_202_ACCEPTED
+        )
 
 
 class RenderShortedURL(View):
