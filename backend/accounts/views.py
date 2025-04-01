@@ -2,14 +2,32 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
-from rest_framework.authtoken.models import Token
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.decorators import api_view, permission_classes
+
+
+from django.middleware.csrf import get_token
 
 
 from .serializers import UserSerializer, UserRegisterSerializer, UserTokenSerializer
 from .models import User
 
 
-class UserAPI(APIView):
+
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def get_csrf_token(request):
+    return Response({"csrfToken": get_token(request)}, status=status.HTTP_200_OK)
+
+
+@api_view(["POST"])
+def logout_user(request):
+    response = Response({"message": "Logged out"})
+    response.delete_cookie("access_token")
+    return response
+
+
+class UserRegisterAPI(APIView):
 
     permission_classes = [AllowAny]
 
@@ -36,7 +54,7 @@ class UserAPI(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class AuthTokenAPI(APIView):
+class UserLoginAPI(APIView):
 
     permission_classes = [AllowAny]
 
@@ -47,13 +65,17 @@ class AuthTokenAPI(APIView):
         if serializer.is_valid():
 
             user = serializer.validated_data["user"]
-            token, created = Token.objects.get_or_create(user=user)
+            refresh = RefreshToken.for_user(user)
 
-            return Response({
-                "token": token.key,
-                "username": user.username,
-            },
-            status=status.HTTP_200_OK
+            response = Response({"message": "Login Successful",},status=status.HTTP_200_OK)
+
+            response.set_cookie(
+                key="access_token",
+                value=str(refresh.access_token),
+                httponly=True, # prevents access from js
+                secure=False, # set True in production
+                samesite="None"
             )
+            return response
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_401_UNAUTHORIZED)
