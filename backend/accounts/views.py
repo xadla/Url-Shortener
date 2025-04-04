@@ -73,8 +73,8 @@ class UserLoginAPI(APIView):
                 key="access_token",
                 value=str(refresh.access_token),
                 httponly=True, # prevents access from js
-                secure=False, # set True in production
-                samesite="None"
+                secure=True, # set True in production
+                samesite='None',
             )
             return response
 
