@@ -10,7 +10,7 @@ const Sign = () => {
       Signup
       </Link>
     
-      <Link to="/" className="px-6 py-3 text-2xl rounded-3xl bg-emerald-500 transition-all duration-300 ease-in-out hover:bg-emerald-300" href="">
+      <Link to="/login" className="px-6 py-3 text-2xl rounded-3xl bg-emerald-500 transition-all duration-300 ease-in-out hover:bg-emerald-300" href="">
       Login
       </Link>
     </div>

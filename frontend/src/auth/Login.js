@@ -1,19 +1,11 @@
-// import React from "react";
-// import { jwtDecode } from "jwt-decode";
 import authAPI, {getCsrfToken} from "./api";
 
 
-const Login = async () => {
-
+const Login = async (username, password) => {
   await getCsrfToken();
-
-  const username = "hadinjr";
-  const password = "123";
-  const res = await authAPI.post("login/", {username, password});
-
-  console.log(res);
-
-}
+  const res = await authAPI.post("login/", { username, password });
+  return res;
+};
 
 
 export default Login;
