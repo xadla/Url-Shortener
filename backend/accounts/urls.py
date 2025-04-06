@@ -10,4 +10,5 @@ urlpatterns = [
     path("login/", UserLoginAPI.as_view(), name="login"),
     path("logout/", logout_user, name="logout"),
     path("get/csrf/", get_csrf_token, name="get_csrf"),
+    path("check/", get_csrf_token, name="check_user"),
 ]

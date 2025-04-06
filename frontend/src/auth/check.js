@@ -1,11 +1,11 @@
 import authAPI, {getCsrfToken} from "./api";
 
 
-const Login = async (username, password) => {
+const CheckUser = async (username, password) => {
   const csrfToken = await getCsrfToken();
 
   const res = await authAPI.post(
-    "login/",
+    "check/",
     { username, password },
     {
       headers: {
@@ -18,4 +18,4 @@ const Login = async (username, password) => {
 };
 
 
-export default Login;
+export default CheckUser;

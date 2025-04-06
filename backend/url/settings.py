@@ -153,12 +153,20 @@ CELERY_TIMEZONE = 'Asia/Tehran'
 # CORS and CSRF Configuration
 CSRF_COOKIE_SAMESITE = "None"
 SESSION_COOKIE_SAMESITE = "None"
-CSRF_COOKIE_SECURE = True  # Set to True in production
-SESSION_COOKIE_SECURE = True  # Set to True in production
-CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:5173"]
+CSRF_COOKIE_SECURE = False  # Set to True in production
+SESSION_COOKIE_SECURE = False  # Set to True in production
+CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:5173", ]
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:5173"]
+CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:5173", ]
 CORS_ALLOW_HEADERS = ["Content-Type", "Authorization", "X-CSRFToken"]
+CORS_ALLOW_METHODS = [
+    "GET",
+    "POST",
+    "PUT",
+    "PATCH",
+    "DELETE",
+    "OPTIONS",
+]
 
 
 # JWT Configuration

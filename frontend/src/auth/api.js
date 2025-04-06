@@ -10,7 +10,8 @@ const authAPI = axios.create({
 
 
 export const getCsrfToken = async () => {
-  await authAPI.get("get/csrf/");
+  const res = await authAPI.get("get/csrf/");
+  return res;
 };
 
 

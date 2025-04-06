@@ -73,9 +73,24 @@ class UserLoginAPI(APIView):
                 key="access_token",
                 value=str(refresh.access_token),
                 httponly=True, # prevents access from js
-                secure=True, # set True in production
+                secure=False, # set True in production
                 samesite='None',
             )
             return response
 
         return Response(serializer.errors, status=status.HTTP_401_UNAUTHORIZED)
+
+
+# Not completed!
+class CheckUserAPI(APIView):
+
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        return Response({
+            "isAuthenticated": True,
+            "user": {
+                "ID": request.user.id,
+                "username": request.user.username
+            }
+        }, status=status.HTTP_200_OK)

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 
-import Login from "../../auth/Login";
+import Login from "../auth/Login";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -14,7 +14,8 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-  
+
+    // Check for empty fields
     if (!username) {
       setError("Username field is required");
       return;
@@ -22,14 +23,21 @@ const LoginPage = () => {
       setError("Password field is required");
       return;
     }
-  
+
     try {
       const result = await Login(username, password);
       console.log("Login success:", result.data);
       // Redirect user or set auth context here
     } catch (error) {
-      console.error("Login error:", error);
-      setError("Login failed. Please check your credentials.");
+      if (error.response) {
+        if (error.response.status === 401) {
+          setError("Username or password is wrong. Please try again.");
+        } else {
+          setError("Server not connected. Please try again later.");
+        }
+      } else {
+        setError("Network error. Please check your connection.");
+      }
     }
   };
   
