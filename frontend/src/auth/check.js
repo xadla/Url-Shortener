@@ -1,20 +1,24 @@
 import authAPI, {getCsrfToken} from "./api";
 
 
-const CheckUser = async (username, password) => {
-  const csrfToken = await getCsrfToken();
-
-  const res = await authAPI.post(
-    "check/",
-    { username, password },
-    {
+const CheckUser = async () => {
+  try {
+    const csrfToken = await getCsrfToken();
+    
+    const res = await authAPI.get("check/", {
       headers: {
         "X-CSRFToken": csrfToken,
       },
+      withCredentials: true
+    });
+    
+    return res;
+  } catch (error) {
+    if (error.response?.status === 401) {
+      return { isAuthenticated: false };
     }
-  );
-
-  return res;
+    throw error;
+  }
 };
 
 

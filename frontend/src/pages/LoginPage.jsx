@@ -61,7 +61,7 @@ const LoginPage = () => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Enter your Username..."
-              className="w-full outline-0 rounded-[10px] text-2xl p-4 bg-[#D4C9BE]"
+              className="w-full outline-0 rounded-[10px] text-2xl p-4 bg-[#D4C9BE] placeholder:text-gray-500"
               required
             />
           </div>
@@ -75,7 +75,7 @@ const LoginPage = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your Password..."
-              className="w-full outline-0 rounded-[10px] text-2xl p-4 bg-[#D4C9BE] pr-12"
+              className="w-full outline-0 rounded-[10px] text-2xl p-4 bg-[#D4C9BE] pr-12 placeholder:text-gray-500"
               required
             />
             <button

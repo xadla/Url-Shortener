@@ -78,11 +78,11 @@ WSGI_APPLICATION = 'url.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': "url_shortener",
-        "USER": "url",
-        "PASSWORD": "url",
-        "HOST": "localhost",
-        "PORT": "5432",
+        'NAME': 'url_shortener',
+        'USER': 'url',
+        'PASSWORD': 'url',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -151,22 +151,15 @@ CELERY_TIMEZONE = 'Asia/Tehran'
 
 
 # CORS and CSRF Configuration
-CSRF_COOKIE_SAMESITE = "None"
-SESSION_COOKIE_SAMESITE = "None"
-CSRF_COOKIE_SECURE = False  # Set to True in production
-SESSION_COOKIE_SECURE = False  # Set to True in production
-CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:5173", ]
+CSRF_COOKIE_SECURE = False  # True in production
+SESSION_COOKIE_SECURE = False  # True in production
+CSRF_COOKIE_SAMESITE = 'Lax'  # 'None' if you need cross-site
+SESSION_COOKIE_SAMESITE = 'Lax'
+CSRF_TRUSTED_ORIGINS = ["http://localhost:5173", ]
+CSRF_COOKIE_HTTPONLY = False
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:5173", ]
+CORS_ALLOWED_ORIGINS = ["http://localhost:5173", ]
 CORS_ALLOW_HEADERS = ["Content-Type", "Authorization", "X-CSRFToken"]
-CORS_ALLOW_METHODS = [
-    "GET",
-    "POST",
-    "PUT",
-    "PATCH",
-    "DELETE",
-    "OPTIONS",
-]
 
 
 # JWT Configuration

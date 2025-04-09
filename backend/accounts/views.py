@@ -1,7 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.decorators import api_view, permission_classes
 
@@ -11,6 +12,7 @@ from django.middleware.csrf import get_token
 
 from .serializers import UserSerializer, UserRegisterSerializer, UserTokenSerializer
 from .models import User
+from .auth_handler import CookieJWTAuthentication
 
 
 
@@ -55,36 +57,49 @@ class UserRegisterAPI(APIView):
 
 
 class UserLoginAPI(APIView):
-
     permission_classes = [AllowAny]
 
     def post(self, request):
-
         serializer = UserTokenSerializer(data=request.data)
 
-        if serializer.is_valid():
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_401_UNAUTHORIZED)
 
-            user = serializer.validated_data["user"]
-            refresh = RefreshToken.for_user(user)
+        user = serializer.validated_data["user"]
+        refresh = RefreshToken.for_user(user)
 
-            response = Response({"message": "Login Successful",},status=status.HTTP_200_OK)
+        response = Response({
+            "message": "Login Successful",
+            "user": {
+                "id": user.id,
+                "username": user.username
+            }
+        }, status=status.HTTP_200_OK)
 
-            response.set_cookie(
-                key="access_token",
-                value=str(refresh.access_token),
-                httponly=True, # prevents access from js
-                secure=False, # set True in production
-                samesite='None',
-            )
-            return response
+        response.set_cookie(
+            key="access_token",
+            value=str(refresh.access_token),
+            httponly=True,
+            secure=False,  # False for localhost, True in production
+            samesite='Lax',  # 'None' if you need cross-site
+            max_age=24 * 3600  # 1 day to match your token lifetime
+        )
 
-        return Response(serializer.errors, status=status.HTTP_401_UNAUTHORIZED)
+        response.set_cookie(
+            key="refresh_token",
+            value=str(refresh),
+            httponly=True,
+            secure=False,
+            samesite='Lax',
+            max_age=7 * 24 * 3600  # 7 days
+        )
+
+        return response
 
 
-# Not completed!
 class CheckUserAPI(APIView):
-
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [CookieJWTAuthentication]
 
     def get(self, request):
         return Response({
