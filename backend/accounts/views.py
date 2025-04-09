@@ -2,18 +2,14 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.decorators import api_view, permission_classes
 
-
 from django.middleware.csrf import get_token
-
 
 from .serializers import UserSerializer, UserRegisterSerializer, UserTokenSerializer
 from .models import User
 from .auth_handler import CookieJWTAuthentication
-
 
 
 @api_view(["GET"])
@@ -22,11 +18,15 @@ def get_csrf_token(request):
     return Response({"csrfToken": get_token(request)}, status=status.HTTP_200_OK)
 
 
-@api_view(["POST"])
-def logout_user(request):
-    response = Response({"message": "Logged out"})
-    response.delete_cookie("access_token")
-    return response
+class UserLogoutAPI(APIView):
+
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [CookieJWTAuthentication]
+
+    def get(self, request):
+        response = Response({"message": "Logged out"})
+        response.delete_cookie("access_token")
+        return response
 
 
 class UserRegisterAPI(APIView):

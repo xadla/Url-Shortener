@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { IoEye, IoEyeOff } from "react-icons/io5";
+import { useNavigate } from 'react-router-dom';
 
 import Login from "../auth/Login";
+import Message from "../components/Message";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -10,6 +12,8 @@ const LoginPage = () => {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,7 +31,7 @@ const LoginPage = () => {
     try {
       const result = await Login(username, password);
       console.log("Login success:", result.data);
-      // Redirect user or set auth context here
+      navigate("/");
     } catch (error) {
       if (error.response) {
         if (error.response.status === 401) {

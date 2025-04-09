@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import LogoutButton from "./Logout";
 
 
 function Navbar() {
@@ -30,6 +31,8 @@ function Navbar() {
         <Link to="/login" className="px-6 py-3 text-2xl rounded-3xl bg-emerald-500 transition-all duration-300 ease-in-out hover:bg-emerald-300" href="">
         Login
         </Link>
+
+        <LogoutButton classes={"px-6 py-3 text-2xl rounded-3xl bg-emerald-500 transition-all duration-300 ease-in-out hover:bg-emerald-300"} />
       </div>
     </nav>
 

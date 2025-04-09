@@ -1,8 +1,9 @@
 import authAPI, {getCsrfToken} from "./api";
+import { getStoredCsrfToken } from "./csrf";
 
 
 const Login = async (username, password) => {
-  const csrfToken = await getCsrfToken();
+  const csrfToken = getStoredCsrfToken();
 
   const res = await authAPI.post(
     "login/",

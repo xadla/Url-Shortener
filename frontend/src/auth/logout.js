@@ -1,11 +1,7 @@
 import Request from "./create_request";
 
 const CheckUser = async () => {
-  try {
-    return Request("check/");
-  } catch (error) {
-    throw error;
-  }
+  return Request("logout/");
 };
 
 export default CheckUser;
