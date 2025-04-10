@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-
+import { ToastContainer } from "react-toastify";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
@@ -10,6 +10,7 @@ import Contact from "./pages/Contact";
 
 import GetCSRF from "./components/GetCSRF";
 import CheckAuth from "./components/CheckAuth";
+import {AuthProvider} from "./auth/AuthContext";
 
 
 function App() {
@@ -20,15 +21,24 @@ function App() {
   }, [])
 
   return (
-    <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/login" element={<LoginPage />} />
-      </Routes>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/login" element={<LoginPage />} />
+        </Routes>
+      </Router>
+      <ToastContainer 
+        position="top-left"
+        autoClose={3000}
+        pauseOnHover
+        draggable
+        theme="light"
+      />
+    </AuthProvider>
   );
 }
 

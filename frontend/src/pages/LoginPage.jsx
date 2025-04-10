@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 import { useNavigate } from 'react-router-dom';
+import { toast } from "react-toastify";
 
-import Login from "../auth/Login";
-import Message from "../components/Message";
+import useAuth from "../auth/AuthContext";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -14,6 +14,7 @@ const LoginPage = () => {
   const [rememberMe, setRememberMe] = useState(false);
 
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,8 +30,8 @@ const LoginPage = () => {
     }
 
     try {
-      const result = await Login(username, password);
-      console.log("Login success:", result.data);
+      const result = await login(username, password);
+      toast.success(`welcome ${result.data.user.username}`);
       navigate("/");
     } catch (error) {
       if (error.response) {

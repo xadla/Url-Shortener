@@ -5,7 +5,6 @@ const Request = async (url, ) => {
 
   try {
     const csrfToken = getStoredCsrfToken();
-
     const res = await authAPI.get(url, {
       headers: {
         "X-CSRFToken": csrfToken,

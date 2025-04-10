@@ -3,6 +3,9 @@ import ReactDOM from "react-dom/client";
 
 
 import App from "./App"
+
+// sytles
+import 'react-toastify/dist/ReactToastify.css';
 import "./styles.css"
 
 

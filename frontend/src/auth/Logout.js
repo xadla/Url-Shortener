@@ -1,7 +1,7 @@
 import Request from "./create_request";
 
-const CheckUser = async () => {
+const Logout = async () => {
   return Request("logout/");
 };
 
-export default CheckUser;
+export default Logout;

@@ -20,13 +20,18 @@ def get_csrf_token(request):
 
 class UserLogoutAPI(APIView):
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     authentication_classes = [CookieJWTAuthentication]
 
     def get(self, request):
-        response = Response({"message": "Logged out"})
-        response.delete_cookie("access_token")
-        return response
+        if request.user.is_authenticated:
+            response = Response({"message": "Success"}, status=status.HTTP_200_OK)
+            response.delete_cookie("access_token")
+            response.delete_cookie("refresh_token")
+            return response
+        else:
+            response = Response({"message": "Failed"}, status=status.HTTP_200_OK)
+            return response
 
 
 class UserRegisterAPI(APIView):
@@ -98,14 +103,20 @@ class UserLoginAPI(APIView):
 
 
 class CheckUserAPI(APIView):
-    permission_classes = [IsAuthenticated]
+
+    permission_classes = [AllowAny]
     authentication_classes = [CookieJWTAuthentication]
 
     def get(self, request):
+        user = request.user
+        if user and user.is_authenticated:
+            return Response({
+                "isAuthenticated": "true",
+                "user": {
+                    "ID": user.id,
+                    "username": user.username
+                }
+            }, status=status.HTTP_200_OK)
         return Response({
-            "isAuthenticated": True,
-            "user": {
-                "ID": request.user.id,
-                "username": request.user.username
-            }
+            "isAuthenticated": "false",
         }, status=status.HTTP_200_OK)
