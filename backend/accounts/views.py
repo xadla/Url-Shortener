@@ -120,3 +120,15 @@ class CheckUserAPI(APIView):
         return Response({
             "isAuthenticated": "false",
         }, status=status.HTTP_200_OK)
+
+
+class CheckUsername(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        username = request.query_params.get('username')
+        if not username:
+            return Response({"error": "Username not provided"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        exists = User.objects.filter(username=username).exists()
+        return Response({"available": not exists})

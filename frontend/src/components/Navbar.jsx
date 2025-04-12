@@ -1,9 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import LogoutButton from "./Logout";
 
+import LogoutButton from "./Logout";
+import useAuth from "../auth/AuthContext";
 
 function Navbar() {
+
+  const { user } = useAuth();
+
   return (
 
     <nav className="grid grid-cols-[1fr_3fr_1fr] gap-4 p-10 bg-[#FFF4EA] shadow-gray-300 m-10 rounded-2xl">
@@ -23,19 +27,20 @@ function Navbar() {
         </ul>
       </div>
 
+      {user ?
+      <LogoutButton classes={"cursor-pointer px-6 py-3 text-2xl rounded-3xl bg-emerald-500 transition-all duration-300 ease-in-out hover:bg-emerald-300"} /> : 
       <div className="flex justify-center items-center gap-4 text-cyan-950 ">
-        <Link to="/" className="px-6 py-3 text-2xl rounded-3xl bg-cyan-600 transition-all duration-300 ease-in-out hover:bg-cyan-500" href="">
+        <Link to="/register" className="px-6 py-3 text-2xl rounded-3xl bg-cyan-600 transition-all duration-300 ease-in-out hover:bg-cyan-500" href="">
         Signup
         </Link>
       
         <Link to="/login" className="px-6 py-3 text-2xl rounded-3xl bg-emerald-500 transition-all duration-300 ease-in-out hover:bg-emerald-300" href="">
         Login
         </Link>
-
-        <LogoutButton classes={"px-6 py-3 text-2xl rounded-3xl bg-emerald-500 transition-all duration-300 ease-in-out hover:bg-emerald-300"} />
       </div>
-    </nav>
+      }
 
+    </nav>
   );
 }
 

@@ -1,7 +1,7 @@
 from django.urls import path
 
 
-from .views import UserRegisterAPI, UserLoginAPI, UserLogoutAPI, get_csrf_token, CheckUserAPI
+from .views import UserRegisterAPI, UserLoginAPI, UserLogoutAPI, get_csrf_token, CheckUserAPI, CheckUsername
 
 
 app_name = "auth"
@@ -11,4 +11,5 @@ urlpatterns = [
     path("logout/", UserLogoutAPI.as_view(), name="logout"),
     path("get/csrf/", get_csrf_token, name="get_csrf"),
     path("check/", CheckUserAPI.as_view(), name="check_user"),
+    path("check/username/", CheckUsername.as_view(), name="check_username"),
 ]

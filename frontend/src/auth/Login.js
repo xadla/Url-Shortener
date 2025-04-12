@@ -1,4 +1,4 @@
-import authAPI, {getCsrfToken} from "./api";
+import authAPI from "./api";
 import { getStoredCsrfToken } from "./csrf";
 
 
