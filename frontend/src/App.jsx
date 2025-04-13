@@ -1,4 +1,3 @@
-import React, {useEffect} from "react";
 import { ToastContainer } from "react-toastify";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -10,6 +9,8 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 
 import {AuthProvider} from "./auth/AuthContext";
+import PublicRoute from "./routes/PublicRoute";
+import PrivateRoute from "./routes/PrivateRoute"; // it's add to links later
 
 
 function App() {
@@ -21,11 +22,11 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<SignupPage />} />
+          <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
+          <Route path="/register" element={<PublicRoute><SignupPage /></PublicRoute>} />
         </Routes>
       </Router>
-      <ToastContainer 
+      <ToastContainer
         position="top-left"
         autoClose={3000}
         pauseOnHover

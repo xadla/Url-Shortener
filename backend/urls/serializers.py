@@ -35,4 +35,3 @@ class CreateUrlSerializer(serializers.ModelSerializer):
             short_url=short_url,
         )
         return url
-

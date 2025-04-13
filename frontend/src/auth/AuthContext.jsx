@@ -2,8 +2,8 @@ import { createContext, useContext, useState, useEffect } from "react";
 
 import Login from "./Login";
 import Logout from "./Logout";
-import GetCSRF from "../components/GetCSRF";
-import CheckAuth from "../components/CheckAuth";
+import GetCSRF from "./GetCSRF";
+import CheckAuth from "./CheckAuth";
 import Signup from "./Signup";
 
 const AuthContext = createContext();
@@ -11,14 +11,18 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  useEffect(async () => {
+  useEffect(() => {
     const checkLogin = async () => {
-      await GetCSRF();
       const loggedInUser = await CheckAuth();
       setUser(loggedInUser);
     };
-    checkLogin();
-    // should be customize for loading
+    
+    const fetchData = async () => {
+      await checkLogin();
+      await GetCSRF();
+    };
+  
+    fetchData();
   }, []);
 
   async function login(username, password) {
@@ -44,7 +48,7 @@ export const AuthProvider = ({ children }) => {
   async function signup(full_name, username, password, password2) {
     try {
       const result = await Signup(full_name, username, password, password2);
-      console.log(result);
+      await login(username, password);
       return result;
     } catch (error) {
       throw error;

@@ -5,8 +5,8 @@ const Signup = async (full_name, username, password, password2) => {
   const csrf = getStoredCsrfToken();
 
   const res = await authAPI.post(
-    "signup/",
-    {full_name, username, password, password2},
+    "register/",
+    {"full_name": full_name, "username": username, "password": password, "password2": password2},
     {
       headers: {
         "X-CSRFToken": csrf,

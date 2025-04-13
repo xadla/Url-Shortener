@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { IoEye, IoEyeOff } from "react-icons/io5";
+import { TiTick } from "react-icons/ti";
+import { HiX } from "react-icons/hi";
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
+import { debounce } from "lodash";
 
 import useAuth from "../auth/AuthContext";
+import CheckUsername from "../auth/CheckUsername";
+
 
 const SignupPage = () => {
   const [fullname, setFullname] = useState("");
@@ -18,6 +23,14 @@ const SignupPage = () => {
 
   const navigate = useNavigate();
   const { signup } = useAuth();
+
+  const checkAvailability = useCallback(
+    debounce(async (value) => {
+      const avail = await CheckUsername(value);
+      setAvailable(avail);
+    }, 500),
+    []
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,12 +53,16 @@ const SignupPage = () => {
     // Check for Passwords
     if (password1 != password2) {
       setError("Passwords do not match");
+      return;
     }
 
-    console.log("Form passed");
+    if (!available) {
+      setError("Username is not Available");
+      return;
+    }
 
     try {
-      const result = await login(fullname, username, password1, password2);
+      const result = await signup(fullname, username, password1, password2);
       toast.success("Your acount is created successfully");
       navigate("/");
     } catch (error) {
@@ -78,18 +95,37 @@ const SignupPage = () => {
             />
           </div>
 
-          <div className="w-[70%]">
+          <div className="w-[70%] relative">
             <label htmlFor="username" className="sr-only">Username</label>
             <input
               type="text"
               id="username"
               name="username"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={
+                async (e) => {
+                  const value = e.target.value;
+                  setUsername(value);
+                  if (!value) {
+                    setAvailable(null);
+                    return;
+                  }
+                  checkAvailability(value);
+                }
+              }
               placeholder="Enter your Username..."
               className="w-full outline-0 rounded-[10px] text-2xl p-4 bg-[#D4C9BE] placeholder:text-gray-500"
               required
             />
+            {available !== null && (
+              <span className="absolute top-1/2 right-4 transform -translate-y-1/2">
+                {available ? (
+                  <TiTick className="text-green-600 text-3xl" />
+                ) : (
+                  <HiX className="text-red-600 text-3xl" />
+                )}
+              </span>
+            )}
           </div>
           
           <div className="w-[70%] relative">
@@ -144,7 +180,17 @@ const SignupPage = () => {
           </button>
 
           <div className="text-2xl text-red-500">
-            <p>{ error }</p>
+            <p>
+              { error }
+            </p>
+          </div>
+        </div>
+        <div className="text-center space-y-2">
+          <div>
+            <span className="text-gray-700 text-xl">Do you have an account? </span>
+            <Link to="/login" className="text-cyan-700 text-xl hover:underline">
+              Login
+            </Link>
           </div>
         </div>
       </form>

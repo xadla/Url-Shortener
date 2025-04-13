@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { CiLogout } from "react-icons/ci";
 
 import useAuth from '../auth/AuthContext';
 
@@ -26,6 +26,7 @@ const LogoutButton = ({ classes }) => {
 
   return (
     <button onClick={handleLogout} className={classes}>
+      <CiLogout className='inline text-2xl mr-2' />
       Logout
     </button>
   );
