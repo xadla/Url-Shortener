@@ -10,20 +10,21 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [checked, setChecked] = useState(false);
 
   useEffect(() => {
-    const checkLogin = async () => {
+    if (checked) return;
+  
+    const fetchData = async () => {
       const loggedInUser = await CheckAuth();
       setUser(loggedInUser);
-    };
-    
-    const fetchData = async () => {
-      await checkLogin();
       await GetCSRF();
+      setChecked(true);
     };
-  
+
     fetchData();
-  }, []);
+  }, [checked]);
+  
 
   async function login(username, password) {
     try {

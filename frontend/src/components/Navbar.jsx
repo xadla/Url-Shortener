@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { IoIosArrowDown, IoIosSettings } from "react-icons/io";
 import { FaUserCog } from "react-icons/fa";
@@ -8,18 +8,24 @@ import { RiUserAddLine } from "react-icons/ri";
 
 import LogoutButton from "./Logout";
 import useAuth from "../auth/AuthContext";
+import ClickOutside from "./ClickOutside";
+
 
 function Navbar() {
   const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
+  const closeDropdown = () => setIsOpen(false);
+
+  ClickOutside(dropdownRef, closeDropdown);
 
   return (
     <nav className="grid grid-cols-[1fr_3fr_1fr] gap-4 p-10 bg-[#FFF4EA] shadow-gray-300 m-10 rounded-2xl">
       {/* Logo */}
       <div className="flex items-center justify-center">
-        <Link to="/" className="text-3xl text-cyan-600 font-medium transition-transform duration-500 hover:rotate-12 hover:scale-110">
+        <Link to="/" className="text-3xl text-cyan-600 font-medium transition-transform duration-500 hover:rotate-6 hover:scale-110">
           URL SHORTENER
         </Link>
       </div>
@@ -27,11 +33,10 @@ function Navbar() {
       {/* Nav Links */}
       <div className="flex items-center justify-center">
         <ul className="flex items-center justify-around w-full text-2xl text-gray-500">
-          <li className="p-2"><Link to="/">Home</Link></li>
-          <li className="p-2"><Link to="/about">About</Link></li>
-          <li className="p-2"><Link to="/contact">Contact</Link></li>
-          <li className="p-2"><Link to="/services">Services</Link></li>
-          <li className="p-2"><Link to="/url">URL</Link></li>
+          <li className="p-2 hover:text-emerald-700 duration-300 transform hover:rotate-6"><Link to="/about">About</Link></li>
+          <li className="p-2 hover:text-emerald-700 duration-300 transform hover:rotate-6"><Link to="/contact">Contact</Link></li>
+          <li className="p-2 hover:text-emerald-700 duration-300 transform hover:rotate-6"><Link to="/services">Services</Link></li>
+          <li className="p-2 hover:text-emerald-700 duration-300 transform hover:rotate-6"><Link to="/create-url">Create URL</Link></li>
         </ul>
       </div>
 

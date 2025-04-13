@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { IoEye, IoEyeOff } from "react-icons/io5";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from "react-toastify";
 
 import useAuth from "../auth/AuthContext";
@@ -14,7 +14,11 @@ const LoginPage = () => {
   const [rememberMe, setRememberMe] = useState(false);
 
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, user } = useAuth();
+
+  // i have bug here
+  const [searchParams] = useSearchParams();
+  const backUrl = searchParams.get("backUrl") || "/";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,7 +36,7 @@ const LoginPage = () => {
     try {
       const result = await login(username, password);
       toast.success(`welcome ${result.data.user.username}`);
-      navigate("/");
+      navigate(backUrl, { replace: true });
     } catch (error) {
       if (error.response) {
         if (error.response.status === 401) {
@@ -45,7 +49,6 @@ const LoginPage = () => {
       }
     }
   };
-  
 
   return (
     <div className="flex h-[70vh] items-center flex-col justify-center w-[100%]">
