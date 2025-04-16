@@ -15,11 +15,16 @@ function Navbar() {
   const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const buttonRef = useRef(null);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
   const closeDropdown = () => setIsOpen(false);
 
-  ClickOutside(dropdownRef, closeDropdown);
+  ClickOutside([dropdownRef, buttonRef], closeDropdown);
+
+  const handleDropdownLinkClick = () => {
+    closeDropdown();
+  };
 
   return (
     <nav className="grid grid-cols-[1fr_3fr_1fr] gap-4 p-10 bg-[#FFF4EA] shadow-gray-300 m-10 rounded-2xl">
@@ -45,6 +50,7 @@ function Navbar() {
         <div className="relative flex items-center justify-center gap-4">
           {/* Dropdown Toggle */}
           <button
+            ref={buttonRef}
             onClick={toggleDropdown}
             className="px-6 cursor-pointer py-3 text-2xl rounded-3xl bg-cyan-600 text-white transition duration-300 hover:bg-cyan-500"
           >
@@ -57,26 +63,26 @@ function Navbar() {
           </button>
 
           {/* Dropdown Menu */}
-          {isOpen && (
-            <div className="absolute top-full mt-2 w-48 bg-white rounded-xl shadow-lg z-10 text-lg">
-              <Link to="/profile" className="px-4 py-2 hover:bg-gray-100 flex items-center justify-left">
-              <FaUserCog className="inline text-2xl mr-2" />
-              My Profile
-              </Link>
-              <Link to="/my-urls" className="px-4 py-2 hover:bg-gray-100 flex items-center justify-left">
-              <PiDiamondsFourLight className="inline text-2xl mr-2" />
-              My URLs
-              </Link>
-              <Link to="/settings" className="px-4 py-2 hover:bg-gray-100 flex items-center justify-left">
-              <IoIosSettings className="inline text-2xl mr-2" />
-              Settings
-              </Link>
-              <div className="border-t my-2"></div>
-              <div className="px-4 pb-2">
-                <LogoutButton classes="w-full text-red-600 hover:text-red-800 cursor-pointer flex items-center" />
+            {isOpen && (
+              <div ref={dropdownRef} className="absolute top-full mt-2 w-48 bg-white rounded-xl shadow-lg z-10 text-lg">
+                <Link onClick={handleDropdownLinkClick} to="/profile" className="px-4 py-2 hover:bg-gray-100 flex items-center justify-left">
+                <FaUserCog className="inline text-2xl mr-2" />
+                My Profile
+                </Link>
+                <Link onClick={handleDropdownLinkClick} to="/my-urls" className="px-4 py-2 hover:bg-gray-100 flex items-center justify-left">
+                <PiDiamondsFourLight className="inline text-2xl mr-2" />
+                My URLs
+                </Link>
+                <Link onClick={handleDropdownLinkClick} to="/settings" className="px-4 py-2 hover:bg-gray-100 flex items-center justify-left">
+                <IoIosSettings className="inline text-2xl mr-2" />
+                Settings
+                </Link>
+                <div className="border-t my-2"></div>
+                <div className="px-4 pb-2">
+                  <LogoutButton onClick={handleDropdownLinkClick} classes="w-full text-red-600 hover:text-red-800 cursor-pointer flex items-center" />
+                </div>
               </div>
-            </div>
-          )}
+            )}
         </div>
       ) : (
         <div className="flex justify-center items-center gap-4 text-cyan-950">

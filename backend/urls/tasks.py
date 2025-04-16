@@ -8,7 +8,6 @@ from .serializers import CreateUrlSerializer
 def create_short_url(data):
     serializer = CreateUrlSerializer(data=data)
     if serializer.is_valid():
-        print("serializer is valid")
         instance = serializer.save()
         return {
             'id': instance.id,
@@ -17,7 +16,6 @@ def create_short_url(data):
             'created_at': instance.created_at.isoformat(),
             'visits': instance.visits,
         }
-    print("serializer is invalid: ", serializer.errors)
     return {
         'errors': serializer.errors,
         'valid': False
