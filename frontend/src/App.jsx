@@ -9,10 +9,11 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import CreateUrl from "./pages/CreateUrl";
 import Services from "./pages/Services";
+import MyURLs from "./urls/MyURLs";
 
 import {AuthProvider} from "./auth/AuthContext";
 import PublicRoute from "./routes/PublicRoute";
-import PrivateRoute from "./routes/PrivateRoute"; // it's add to links later
+import PrivateRoute from "./routes/PrivateRoute";
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
           <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
           <Route path="/register" element={<PublicRoute><SignupPage /></PublicRoute>} />
           <Route path="/create-url" element={<PrivateRoute><CreateUrl /></PrivateRoute>} />
+          <Route path="/my-urls" element={<PrivateRoute><MyURLs /></PrivateRoute>} />
         </Routes>
       </Router>
       <ToastContainer

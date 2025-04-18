@@ -13,7 +13,7 @@ from .models import Url
 from .tasks import create_short_url
 from accounts.auth_handler import CookieJWTAuthentication
 from url.celery import app
-from .serializers import CreateUrlSerializer
+from .serializers import CreateUrlSerializer, UrlSerializer
 
 
 class CreateShortURL(APIView):
@@ -84,3 +84,13 @@ class RenderShortedURL(View):
         url.visits += 1
         url.save()
         return redirect(url.original_url)
+
+
+class GetMyURLs(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [CookieJWTAuthentication]
+
+    def get(self, request):
+        user_urls = Url.objects.filter(author=request.user)
+        serializer = UrlSerializer(user_urls, many=True)
+        return Response(serializer.data)

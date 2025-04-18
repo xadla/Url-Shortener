@@ -35,3 +35,10 @@ class CreateUrlSerializer(serializers.ModelSerializer):
             short_url=short_url,
         )
         return url
+
+
+class UrlSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Url
+        fields = ['id', 'original_url', 'short_url', 'created_at', 'visits']
+        read_only_fields = ['id', 'short_url', 'created_at', 'visits']
