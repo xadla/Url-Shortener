@@ -9,7 +9,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import CreateUrl from "./pages/CreateUrl";
 import Services from "./pages/Services";
-import MyURLs from "./urls/MyURLs";
+import MyURLs from "./pages/MyURLs";
 
 import {AuthProvider} from "./auth/AuthContext";
 import PublicRoute from "./routes/PublicRoute";

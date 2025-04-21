@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FaCopy } from "react-icons/fa6";
 import { LuCopyCheck } from "react-icons/lu";
 
-import GetURLs from "./GetURLs";
+import GetURLs from "../urls/GetURLs";
 
 const MyURLs = () => {
   const [urls, setUrls] = useState([]);
