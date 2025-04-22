@@ -101,7 +101,8 @@ class CheckUserAPI(APIView):
                 "isAuthenticated": "true",
                 "user": {
                     "ID": user.id,
-                    "username": user.username
+                    "username": user.username,
+                    "created": user.created,
                 }
             }, status=status.HTTP_200_OK)
         return Response({

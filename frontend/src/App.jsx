@@ -10,6 +10,7 @@ import Contact from "./pages/Contact";
 import CreateUrl from "./pages/CreateUrl";
 import Services from "./pages/Services";
 import MyURLs from "./pages/MyURLs";
+import Profile from "./pages/Profile"
 
 import {AuthProvider} from "./auth/AuthContext";
 import PublicRoute from "./routes/PublicRoute";
@@ -30,6 +31,7 @@ function App() {
           <Route path="/register" element={<PublicRoute><SignupPage /></PublicRoute>} />
           <Route path="/create-url" element={<PrivateRoute><CreateUrl /></PrivateRoute>} />
           <Route path="/my-urls" element={<PrivateRoute><MyURLs /></PrivateRoute>} />
+          <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
         </Routes>
       </Router>
       <ToastContainer
