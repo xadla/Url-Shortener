@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Circles } from "react-loader-spinner";
+import { ClipLoader } from "react-spinners";
 import { BiCheckboxChecked } from "react-icons/bi";
 import { HiXCircle } from "react-icons/hi";
 import { toast } from "react-toastify";
@@ -103,12 +103,10 @@ const CreateUrl = () => {
         </p>
         {loading && (
           <div className="flex justify-center mt-4">
-            <Circles
-              height="40"
-              width="40"
-              color="#3B82F6"
-              ariaLabel="circles-loading"
-              visible={true}
+            <ClipLoader 
+              color="#3B82F6" 
+              size={40} 
+              speedMultiplier={0.8} 
             />
           </div>
         )}
